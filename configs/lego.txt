@@ -1,0 +1,13 @@
+name = lego
+data_dir = ../datasets/nerf_synthetics/lego
+dataset_type = blender
+half_res = True
+
+cap_n_samples = 64
+cap_n_importance = 128
+
+use_view_dirs = True
+
+white_bkgd = True
+render_test = True
+cap_n_rand = 4096
