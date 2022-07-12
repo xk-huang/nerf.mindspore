@@ -221,8 +221,8 @@ class VolumeRenderer(nn.Cell):
             axis=-1,
         )  # (chunk_size, N_samples)
         sum_op = mindspore.ops.ReduceSum()
-        rgb_map = sum_op(weights[..., None] * rgbs, axis=-2)  # (chunk_size, 3)
-        acc_map = sum_op(weights, axis=-1)  # (chunk_size)
+        rgb_map = sum_op(weights[..., None] * rgbs, -2)  # (chunk_size, 3)
+        acc_map = sum_op(weights, -1)  # (chunk_size)
 
         if self.white_bkgd:
             rgb_map = rgb_map + (1.0 - acc_map[..., None])
