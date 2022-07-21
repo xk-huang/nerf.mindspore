@@ -110,7 +110,10 @@ def sample_pdf(bins, weights, cap_cap_n_samples, det=False):
         expand_op = md.ops.BroadcastTo(list(cdf.shape[:-1]) + [cap_cap_n_samples])
         u = expand_op(u)
     else:
-        u = md.numpy.rand(list(cdf.shape[:-1]) + [cap_cap_n_samples])
+        temp_shape = cdf.shape[:-1]
+        cap_cap_n_samples_new = cap_cap_n_samples
+        temp_shape_new = list(temp_shape) + [cap_cap_n_samples_new]
+        u = md.numpy.rand(temp_shape_new)
 
     # Invert CDF
     indexes = nd_searchsorted(cdf, u)
