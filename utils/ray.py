@@ -36,8 +36,8 @@ def generate_rays(h, w, f, pose):
     """
 
     # Coordinates of the 2D grid
-    cols = md.ops.ExpandDims()(md.numpy.linspace(-1.0 * w / 2, w - 1 - w / 2, w) / f, 0).repeat(h, axis=0)
-    rows = md.ops.ExpandDims()(-1.0 * md.numpy.linspace(-1.0 * h / 2, h - 1 - h / 2, h) / f, 1).repeat(w, axis=1)
+    cols = md.ops.ExpandDims()(md.numpy.linspace(-1.0 * w / 2, w - 1 - w / 2, w) / md.Tensor(f, dtype=md.float32), 0).repeat(h, axis=0)
+    rows = md.ops.ExpandDims()(-1.0 * md.numpy.linspace(-1.0 * h / 2, h - 1 - h / 2, h) / md.Tensor(f, dtype=md.float32), 1).repeat(w, axis=1)
 
     # Ray directions for all pixels
     ray_dirs = md.numpy.stack([cols, rows, -1.0 * md.numpy.ones_like(cols)], axis=-1)  # (h, w, 3)
