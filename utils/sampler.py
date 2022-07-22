@@ -105,12 +105,15 @@ def sample_pdf(bins, weights, cap_cap_n_samples, det=False):
     cdf = md.ops.Concat(-1)([md.numpy.zeros_like(cdf[..., :1]), cdf])  # (batch, len(bins))
 
     # Take uniform samples
+    temp_shape = cdf.shape[:-1]
+    cap_cap_n_samples_new = cap_cap_n_samples
+    temp_shape_new = list(temp_shape) + [cap_cap_n_samples_new]
     if det:
         u = md.numpy.linspace(0.0, 1.0, num=cap_cap_n_samples)
-        expand_op = md.ops.BroadcastTo(list(cdf.shape[:-1]) + [cap_cap_n_samples])
+        expand_op = md.ops.BroadcastTo(temp_shape_new)
         u = expand_op(u)
     else:
-        u = md.numpy.rand(list(cdf.shape[:-1]) + [cap_cap_n_samples])
+        u = md.numpy.rand(temp_shape_new)
 
     # Invert CDF
     indexes = nd_searchsorted(cdf, u)
