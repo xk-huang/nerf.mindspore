@@ -11,4 +11,4 @@ cap_n_importance = 128
 
 use_view_dirs = True
 raw_noise_std = 1e0
-render_test = True
+render_test = False

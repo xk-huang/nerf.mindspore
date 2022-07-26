@@ -36,6 +36,7 @@ def eval_pipeline(config, out_dir):
     if config.dataset_type == "blender":
         images, poses, render_poses, hwf, i_split = load_blender_data(config.data_dir, config.half_res,
                                                                       config.test_skip)
+        render_poses = render_poses[:, :3, :4]
         print("Loaded blender", images.shape, render_poses.shape, hwf, config.data_dir)
         i_train, i_val, i_test = i_split
         near = 2.0
@@ -54,8 +55,13 @@ def eval_pipeline(config, out_dir):
             bd_factor=0.75,
             spherify=config.spherify,
         )
-        hwf = poses[0, :3, -1]
+        if config.render_test:
+            hwf = poses[0, :3, -1]
+        else:
+            hwf = render_poses[0, :3, -1]
         poses = poses[:, :3, :4]
+        render_poses = render_poses[:, :3, :4]
+
         print("Loaded llff", images.shape, render_poses.shape, hwf, config.data_dir)
         if not isinstance(i_test, list):
             i_test = [i_test]
@@ -149,7 +155,7 @@ def eval_pipeline(config, out_dir):
         cap_w,
         focal,
         renderer,
-        md.Tensor(poses[i_test.tolist()]),
+        render_poses,
         images[i_test.tolist()] if config.render_test else None,
         on_progress=save_img_fn,
         on_complete=save_video_fn,
@@ -183,7 +189,6 @@ def main():
     out_dir = os.path.join(base_dir, exp_name + "_" + str(exp_num))
 
     # Start eval pipeline
-    config.render_only = True
     eval_pipeline(config, out_dir)
 
 
