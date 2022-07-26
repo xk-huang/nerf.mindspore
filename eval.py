@@ -21,7 +21,7 @@ import numpy as np
 from engine import test_net
 
 from data import load_blender_data, load_llff_data
-from models import VolumeRenderer
+from models import VolumeRendererForInference
 from utils.config import get_config
 from utils.engine_utils import context_setup, create_nerf
 from utils.results_handler import save_image, save_video
@@ -110,7 +110,7 @@ def eval_pipeline(config, out_dir):
     # Training steps
     global_steps = start_iter
     # Create volume renderer
-    renderer = VolumeRenderer(
+    renderer = VolumeRendererForInference(
         config.chunk,
         config.cap_n_samples,
         config.cap_n_importance,
